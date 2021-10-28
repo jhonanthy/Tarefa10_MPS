@@ -9,7 +9,6 @@ public class UsuarioeSenha{
         logininfo.put("caio", "1234");
         logininfo.put("cassio", "1234");
         logininfo.put("Jhonanthy", "1234");
-        logininfo.put("raoni", "10");
 
     }
 
