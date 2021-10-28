@@ -16,6 +16,8 @@ public class pagLogin implements ActionListener{
     JButton botaologin = new JButton("Login");
     JButton botaoreset = new JButton("Reset");
     JButton botaoAdd = new JButton("Criar Usuário");
+    JButton botaoMostraUsuarios = new JButton("Lista Usuário");
+    JButton botaoDelete = new JButton("Deletar Usuário");
 
     JTextField campoUsuario = new JTextField();
     JPasswordField campoSenha = new JPasswordField();
@@ -32,19 +34,24 @@ public class pagLogin implements ActionListener{
 
         usuarioLabel.setBounds(50,100,75,25);
         senhaLabel.setBounds(50,150,75,25);
-        mensagem.setBounds(125,250,250,35);
+        mensagem.setBounds(125,250,1050,35);
         campoUsuario.setBounds(125,100,200,25);
         campoSenha.setBounds(125,150,200,25);
         botaologin.setBounds(125,200,100,25);
         botaoreset.setBounds(225,200,100,25);
-        botaoAdd.setBounds(170,225,110,25);
+        botaoDelete.setBounds(325,200,100,25);
+        botaoMostraUsuarios.setBounds(225,225,110,25);
+        botaoAdd.setBounds(125,225,110,25);
 
         botaologin.addActionListener(this);
         botaoreset.addActionListener(this);
+        botaoMostraUsuarios.addActionListener(this);
+        botaoDelete.addActionListener(this);
         botaoAdd.addActionListener(this);
 
         botaologin.setFocusable(false);
         botaoreset.setFocusable(false);
+        botaoMostraUsuarios.setFocusable(false);
         botaoAdd.setFocusable(false);
 
         frame.add(usuarioLabel);
@@ -54,6 +61,8 @@ public class pagLogin implements ActionListener{
         frame.add(campoSenha);
         frame.add(botaologin);
         frame.add(botaoreset);
+        frame.add(botaoDelete);
+        frame.add(botaoMostraUsuarios);
         frame.add(botaoAdd);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -72,7 +81,40 @@ public class pagLogin implements ActionListener{
             campoSenha.setText("");
 
         }
-        
+        if (e.getSource() == botaoMostraUsuarios){
+            String text ="";
+            
+            int cont = 0;
+            for (String key : logininfo.keySet()) {
+             ++cont;
+                //Capturamos o valor a partir da chave
+                String value = logininfo.get(key);
+                text =  text+"|| Login : "+cont+". "+key + "- Senha : " + value+ " ";
+            //    a.concat(text);
+                // System.out.println(key + " = " + value);
+         }
+         
+         mensagem.setText(text);
+
+        }
+        if (e.getSource()== botaoDelete){
+            String userId = campoUsuario.getText();
+            if (userId.isEmpty()){
+              mensagem.setText("Insira o nome do usuario a ser excluido!");  
+            }
+            else{
+                
+             // remove by value
+             logininfo.keySet().removeIf(key -> key != userId);
+                if (logininfo.containsKey(userId)){
+                    mensagem.setText("O usuario não foi excluido :"+userId+" ERRO! ");
+                }
+                
+
+               }
+
+
+        }
         if(e.getSource() == botaologin){
 
                 String userId = campoUsuario.getText();
