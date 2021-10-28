@@ -108,8 +108,7 @@ public class pagCadastro implements ActionListener {
                 boolean tamUserId = userId.length() < 13 && userId.length() > 0;
                 boolean numUserId = userId.matches(".*\\d.*");
 
-                if(! ( logininfo.containsKey(userId) ) 
-                    && tamSenha && quantDigitosSenha && letraSenha
+                if (!logininfo.containsKey(userId) && tamSenha && quantDigitosSenha && !letraSenha
                     && tamUserId && !numUserId ) {
 
                     logininfo.put(userId, senha);
