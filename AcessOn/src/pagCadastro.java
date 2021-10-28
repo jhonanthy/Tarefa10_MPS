@@ -11,7 +11,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 public class pagCadastro implements ActionListener {
-    
+  //  
     JFrame frame = new JFrame();
 
     JButton botaoreset = new JButton("Reset");
