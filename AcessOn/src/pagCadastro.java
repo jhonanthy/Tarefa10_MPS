@@ -83,7 +83,7 @@ public class pagCadastro implements ActionListener {
                 String userId = campoUsuario.getText();
                 String senha = String.valueOf(campoSenha.getPassword());
 
-                boolean tamSenha = senha.length() < 21 && senha.length() > 7;
+                boolean tamSenha = senha.length() < 21 && senha.length() >=8;
                 boolean letraSenha = senha.matches(".*[a-z].*");
 
                 int contDigitosSenha = 0;
@@ -108,7 +108,7 @@ public class pagCadastro implements ActionListener {
                 boolean tamUserId = userId.length() < 13 && userId.length() > 0;
                 boolean numUserId = userId.matches(".*\\d.*");
 
-                if( !( logininfo.containsKey(userId) ) 
+                if(! ( logininfo.containsKey(userId) ) 
                     && tamSenha && quantDigitosSenha && letraSenha
                     && tamUserId && !numUserId ) {
 
