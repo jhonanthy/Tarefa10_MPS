@@ -16,6 +16,8 @@ public class pagCadastro implements ActionListener {
 
     JButton botaoreset = new JButton("Reset");
     JButton botaocadastrar = new JButton("Cadastrar");
+    JButton botaoMostraUsuarios = new JButton("Lista Usuário");
+    JButton botaoDelete = new JButton("Deletar Usuário");
 
     JTextField campoUsuario = new JTextField();
     JPasswordField campoSenha = new JPasswordField();
@@ -34,32 +36,42 @@ public class pagCadastro implements ActionListener {
 
         usuarioLabel.setBounds(50,100,75,25);
         senhaLabel.setBounds(50,150,75,25);
-        mensagem.setBounds(20,225,1050,35);
-        mensagem2.setBounds(20,245,1050,35);
-        mensagem3.setBounds(20,265,1050,35);
+        mensagem.setBounds(20,245,1050,35);
+        mensagem2.setBounds(20,265,1050,35);
+        mensagem3.setBounds(20,285,1050,35);
         campoUsuario.setBounds(125,100,200,25);
         campoSenha.setBounds(125,150,200,25);
         botaocadastrar.setBounds(125,200,100,25);
         botaoreset.setBounds(225,200,100,25);
-
+        botaoMostraUsuarios.setBounds(125,225,110,25);
+        //125,200,100,25);
+        botaoDelete.setBounds(225,225,100,25);
+       
+       
         botaocadastrar.addActionListener(this);
         botaoreset.addActionListener(this);
+        botaoDelete.addActionListener(this);
+        botaoMostraUsuarios.addActionListener(this);
 
         botaoreset.setFocusable(false);
         botaocadastrar.setFocusable(false);
+        botaoMostraUsuarios.setFocusable(false);
+        botaoDelete.setFocusable(false);
 
         frame.add(usuarioLabel);
         frame.add(senhaLabel);
-
+        //labels mensagens
         frame.add(mensagem);
         frame.add(mensagem2);
         frame.add(mensagem3);
-
+        //Dados
         frame.add(campoUsuario);
         frame.add(campoSenha);
-
+        //Botões
         frame.add(botaoreset);
         frame.add(botaocadastrar);
+        frame.add(botaoMostraUsuarios);
+        frame.add(botaoDelete);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(420,420);
@@ -77,7 +89,41 @@ public class pagCadastro implements ActionListener {
             campoSenha.setText("");
 
         }
-        
+        if (e.getSource() == botaoMostraUsuarios){
+            String text ="";
+            
+            int cont = 0;
+            for (String key : logininfo.keySet()) {
+             ++cont;
+                //Capturamos o valor a partir da chave
+                String value = logininfo.get(key);
+                text =  text+"|| Login : "+cont+". "+key + "- Senha : " + value+ " ";
+            //    a.concat(text);
+                // System.out.println(key + " = " + value);
+         }
+         
+         mensagem.setText(text);
+        }
+        if (e.getSource()== botaoDelete){
+            String userId = campoUsuario.getText();
+            if (userId.isEmpty()){
+              mensagem.setText("Insira o nome do usuario a ser excluido!");  
+            }
+            else{
+                
+             // remove by value
+                logininfo.keySet().removeIf(key -> key != userId);
+                if (logininfo.containsKey(userId)){
+                    mensagem.setText("O usuario não foi excluido :"+userId+" ERRO! ");
+                }
+                else {
+                    mensagem.setText("Usuario :"+ userId +" Excluido com Sucesso!" );
+                }
+                
+
+               }
+
+        }
         if(e.getSource() == botaocadastrar) {
 
                 String userId = campoUsuario.getText();
