@@ -20,32 +20,38 @@ public class pagCadastro implements ActionListener {
     JButton botaoDelete = new JButton("Deletar Usuário");
 
     JTextField campoUsuario = new JTextField();
+    JTextField dataNasci = new JTextField();
     JPasswordField campoSenha = new JPasswordField();
-
     JLabel usuarioLabel = new JLabel("Usuário:");
     JLabel senhaLabel = new JLabel("Senha:");
+    JLabel dataLabel = new JLabel("Data de nascimento:");
     JLabel mensagem = new JLabel();
     JLabel mensagem2 = new JLabel();
     JLabel mensagem3 = new JLabel();
 
+    UsuarioeSenha conta;
+
     HashMap<String,String> logininfo = new HashMap<String,String>();
 
-    pagCadastro (HashMap<String,String> logininfoOriginal){
+    pagCadastro (UsuarioeSenha contas){
 
-        logininfo = logininfoOriginal;
+        conta = contas;
+        logininfo = conta.getlogininfo();
 
-        usuarioLabel.setBounds(50,100,75,25);
-        senhaLabel.setBounds(50,150,75,25);
-        mensagem.setBounds(20,245,1050,35);
-        mensagem2.setBounds(20,265,1050,35);
-        mensagem3.setBounds(20,285,1050,35);
+        usuarioLabel.setBounds(20,100,75,25);
+        dataLabel.setBounds(20,150,75,25);
+        senhaLabel.setBounds(20,200,75,25);
+        mensagem.setBounds(20,295,1050,35);
+        mensagem2.setBounds(20,315,1050,35);
+        mensagem3.setBounds(20,335,1050,35);
         campoUsuario.setBounds(125,100,200,25);
-        campoSenha.setBounds(125,150,200,25);
-        botaocadastrar.setBounds(125,200,100,25);
-        botaoreset.setBounds(225,200,100,25);
-        botaoMostraUsuarios.setBounds(125,225,110,25);
+        dataNasci.setBounds(125,150,200,25);
+        campoSenha.setBounds(125,200,200,25);
+        botaocadastrar.setBounds(125,250,100,25);
+        botaoreset.setBounds(225,250,100,25);
+        botaoMostraUsuarios.setBounds(125,275,110,25);
         //125,200,100,25);
-        botaoDelete.setBounds(225,225,100,25);
+        botaoDelete.setBounds(225,275,100,25);
        
        
         botaocadastrar.addActionListener(this);
@@ -60,6 +66,7 @@ public class pagCadastro implements ActionListener {
 
         frame.add(usuarioLabel);
         frame.add(senhaLabel);
+        frame.add(dataLabel);
         //labels mensagens
         frame.add(mensagem);
         frame.add(mensagem2);
@@ -67,6 +74,7 @@ public class pagCadastro implements ActionListener {
         //Dados
         frame.add(campoUsuario);
         frame.add(campoSenha);
+        frame.add(dataNasci);
         //Botões
         frame.add(botaoreset);
         frame.add(botaocadastrar);
@@ -74,7 +82,7 @@ public class pagCadastro implements ActionListener {
         frame.add(botaoDelete);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(420,420);
+        frame.setSize(900,900);
         frame.setLayout(null);
         frame.setVisible(true);
 
@@ -89,6 +97,7 @@ public class pagCadastro implements ActionListener {
             campoSenha.setText("");
 
         }
+
         if (e.getSource() == botaoMostraUsuarios){
             String text ="";
             
@@ -97,13 +106,16 @@ public class pagCadastro implements ActionListener {
              ++cont;
                 //Capturamos o valor a partir da chave
                 String value = logininfo.get(key);
-                text =  text+"|| Login : "+cont+". "+key + "- Senha : " + value+ " ";
+                text =  text + "  || Login : " +cont + ". " + key + "- Senha : " + value + "  ";
+
             //    a.concat(text);
                 // System.out.println(key + " = " + value);
-         }
+            }
          
-         mensagem.setText(text);
+            mensagem.setText(text);
+
         }
+
         if (e.getSource()== botaoDelete){
             String userId = campoUsuario.getText();
             if (userId.isEmpty()){
@@ -154,12 +166,12 @@ public class pagCadastro implements ActionListener {
                 boolean tamUserId = userId.length() < 13 && userId.length() > 0;
                 boolean numUserId = userId.matches(".*\\d.*");
 
-                if (!logininfo.containsKey(userId) && tamSenha && quantDigitosSenha && !letraSenha
+                if (!logininfo.containsKey(userId) && tamSenha && quantDigitosSenha && letraSenha
                     && tamUserId && !numUserId ) {
 
-                    logininfo.put(userId, senha);
+                    conta.addConta(userId, senha);
                     frame.dispose();
-                    PagPrincipal pagPrincipal = new PagPrincipal(logininfo);
+                    new PagPrincipal(conta);
 
                 }
                 else {
