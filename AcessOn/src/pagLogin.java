@@ -1,4 +1,6 @@
 import java.awt.Color;
+//import java.awt.geom.Dimension2D;
+//import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
@@ -11,6 +13,7 @@ import javax.swing.JTextField;
 
 public class pagLogin implements ActionListener{
 
+    ///Dimension2D screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     JFrame frame = new JFrame();
 
     JButton botaologin = new JButton("Login");
@@ -26,11 +29,14 @@ public class pagLogin implements ActionListener{
     JLabel senhaLabel = new JLabel("Senha:");
     JLabel mensagem = new JLabel();
 
+    UsuarioeSenha conta;
+
     HashMap<String,String> logininfo = new HashMap<String,String>();
 
-    pagLogin(HashMap<String,String> logininfoOriginal){
+    pagLogin(UsuarioeSenha contas){
 
-        logininfo = logininfoOriginal;
+        conta = contas;
+        logininfo = conta.getlogininfo();
 
         usuarioLabel.setBounds(50,100,75,25);
         senhaLabel.setBounds(50,150,75,25);
@@ -65,7 +71,7 @@ public class pagLogin implements ActionListener{
         frame.add(botaoAdd);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(420,420);
+        frame.setSize(900, 900);
         frame.setLayout(null);
         frame.setVisible(true);
 
@@ -92,7 +98,7 @@ public class pagLogin implements ActionListener{
                         mensagem.setText("Senha Correta");
                         mensagem.setForeground(Color.GREEN);
                         frame.dispose();
-                        PagPrincipal pagPrincipal = new PagPrincipal(logininfo);
+                        new PagPrincipal(conta);
                     }
                     else{
                         mensagem.setText("Senha Errada");
@@ -108,7 +114,7 @@ public class pagLogin implements ActionListener{
         if(e.getSource() == botaoAdd){
 
             frame.dispose();
-            pagCadastro cadastrar = new pagCadastro(logininfo);
+            new pagCadastro(conta);
 
         }
     }
