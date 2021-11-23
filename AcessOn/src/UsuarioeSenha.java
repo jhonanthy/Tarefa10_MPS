@@ -16,7 +16,7 @@ public class UsuarioeSenha{
     UsuarioeSenha(){
 
         
-/*      logininfo.put("caio", "1234");
+    /*  logininfo.put("caio", "1234");
         logininfo.put("cassio", "1234");
         logininfo.put("Jhonanthy", "1234"); */
 
@@ -45,6 +45,15 @@ public class UsuarioeSenha{
         return usuarios;
     }
 
+    public void alterarUsuario(String usuario, String senha){
+        Iterator<Integer> iterator = usuarios.iterator();
+        while(iterator.hasNext()) {
+            if(usuarios.toString() == usuario){
+                usuarios.add(usuario);
+                logininfo.put(usuario, senha);
+            }
+        }
+    }
     /*public void setDataNascimento(int dia, int mes, int ano) {
         dataNasci =  //String.valueOf(dia)+"/"+String.valueOf(mes)+"/"+String.valueOf(ano);
 

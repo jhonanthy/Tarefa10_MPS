@@ -22,6 +22,7 @@ public class pagCadastro implements ActionListener {
     JButton botaocadastrar = new JButton("Cadastrar");
     JButton botaoMostraUsuarios = new JButton("Lista Usuário");
     JButton botaoDelete = new JButton("Deletar Usuário");
+    JButton botaoAlterarUsuario = new JButton("Alterar Usuário");
 
     JTextField campoUsuario = new JTextField();
     JFormattedTextField dataNasci = new JFormattedTextField(Mascara("##/##/####"));
@@ -218,6 +219,12 @@ public class pagCadastro implements ActionListener {
                     // mensagem3.setForeground(Color.RED);
 
                 }
+        }
+        if(e.getSource() == botaoAlterarUsuario){
+
+            String userId = campoUsuario.getText();
+            String senha = String.valueOf(campoSenha.getPassword());
+            UsuarioeSenha.alterarUsuario(usuario,senha);
         }
             
     }
