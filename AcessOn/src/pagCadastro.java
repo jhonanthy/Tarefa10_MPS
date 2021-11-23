@@ -3,12 +3,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import java.util.HashMap;
-
+import java.util.*;
+import java.text.*;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.JFormattedTextField;
+import javax.swing.text.MaskFormatter;
+
 
 public class pagCadastro implements ActionListener {
   //  
@@ -20,7 +24,7 @@ public class pagCadastro implements ActionListener {
     JButton botaoDelete = new JButton("Deletar Usuário");
 
     JTextField campoUsuario = new JTextField();
-    JTextField dataNasci = new JTextField();
+    JFormattedTextField dataNasci = new JFormattedTextField(Mascara("##/##/####"));
     JPasswordField campoSenha = new JPasswordField();
     JLabel usuarioLabel = new JLabel("Usuário:");
     JLabel senhaLabel = new JLabel("Senha:");
@@ -32,7 +36,7 @@ public class pagCadastro implements ActionListener {
     UsuarioeSenha conta;
 
     HashMap<String,String> logininfo = new HashMap<String,String>();
-
+    HashMap<String,String> datasNascimento = new HashMap<String,String>();
     pagCadastro (UsuarioeSenha contas){
 
         conta = contas;
@@ -89,6 +93,7 @@ public class pagCadastro implements ActionListener {
     }
 
     @Override
+    
     public void actionPerformed(ActionEvent e) {
         
         if(e.getSource() == botaoreset){
@@ -98,6 +103,7 @@ public class pagCadastro implements ActionListener {
 
         }
 
+
         if (e.getSource() == botaoMostraUsuarios){
             String text ="";
             
@@ -106,6 +112,7 @@ public class pagCadastro implements ActionListener {
              ++cont;
                 //Capturamos o valor a partir da chave
                 String value = logininfo.get(key);
+                String dtNasc = datasNascimento.get(key); 
                 text =  text + "  || Login : " +cont + ". " + key + "- Senha : " + value + "  ";
 
             //    a.concat(text);
@@ -140,53 +147,91 @@ public class pagCadastro implements ActionListener {
 
                 String userId = campoUsuario.getText();
                 String senha = String.valueOf(campoSenha.getPassword());
-
+                String dtnasc = String.valueOf(dataNasci.getText());
+                // SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy");
+                // Date dtNasc =  sdf1.parse(dataNasci.getText());
                 boolean tamSenha = senha.length() < 21 && senha.length() >=8;
                 boolean letraSenha = senha.matches(".*[a-z].*");
-
+                
+                
+                // String dataUsuario = sdf1. toString(dtNasc);
+                
+                
                 int contDigitosSenha = 0;
 
+             
                 for (int i = 0; i < senha.length(); i++){
 
-                    if ( Character.isDigit(senha.charAt(i) ) ) {
+                    if ( Character.isDigit(senha.charAt(i) ) ) {//testa a quantidade de numeros digitados na senha
 
-                        ++contDigitosSenha;
+                        ++contDigitosSenha ;
 
                     }
                 }
 
                 boolean quantDigitosSenha = false;
 
-                if (contDigitosSenha > 1) {
+                if (contDigitosSenha > 1) { //tem que ter dois numeros
 
                     quantDigitosSenha = true;
 
                 }
-
+                    //testa o tamanho do userId
                 boolean tamUserId = userId.length() < 13 && userId.length() > 0;
-                boolean numUserId = userId.matches(".*\\d.*");
+                boolean numUserId = userId.matches(".*\\d.*"); // testa se existe numeros
 
                 if (!logininfo.containsKey(userId) && tamSenha && quantDigitosSenha && letraSenha
                     && tamUserId && !numUserId ) {
 
-                    conta.addConta(userId, senha);
+                    conta.addConta(userId, senha,dtnasc);
                     frame.dispose();
                     new PagPrincipal(conta);
 
                 }
-                else {
-
-                    mensagem.setText("Verifique se seu ID tem no mínimo 1 letra e no máximo 12. Ele também não pode ter números.\n");
-                    mensagem2.setText("Verifique se sua senha tem tamanho entre 8 e 20, e pelo menos 2 números.\n");
-                    mensagem3.setText("Caso as condições acima tenham sido satisfeitas, o usuário já existe, escolha outro.");
+                else { /*Validações*/
+                    if (!quantDigitosSenha){
+                        mensagem.setText("Verifique a quantidade de numeros na senha, tem que haver no minimo dois!");  
+                    }
+                    else if ( numUserId) {
+                        mensagem.setText("Não pode existir numeros no login! ");
+                    } else if (!tamUserId){ // quantidade de caracteres incorreto no userid
+                            if (userId.length() == 0) {
+                                mensagem.setText("Não foi inserido o nome do usuario! ");
+                            }
+                            else if (userId.length() >=13){
+                                mensagem.setText(" Nome do usuario com quantidade de caracteres superior a 12 ");
+                            }
+                        
+                    }
+                    else if(!tamUserId){
+                        mensagem.setText("Verifique se sua senha tem tamanho entre 8 e 20, e pelo menos 2 números.\n");
+                    }
+                    else if (logininfo.containsKey(userId)){
+                        mensagem.setText("Usuario já existe!");
+                    }
+                    // mensagem.setText("Verifique se seu ID tem no mínimo 1 letra e no máximo 12. Ele também não pode ter números.\n");
+                    // mensagem2.setText("Verifique se sua senha tem tamanho entre 8 e 20, e pelo menos 2 números.\n");
+                    // mensagem3.setText("Caso as condições acima tenham sido satisfeitas, o usuário já existe, escolha outro.");
                     
                     mensagem.setForeground(Color.RED);
-                    mensagem2.setForeground(Color.RED);
-                    mensagem3.setForeground(Color.RED);
+                    // mensagem2.setForeground(Color.RED);
+                    // mensagem3.setForeground(Color.RED);
 
                 }
         }
             
     }
+    public MaskFormatter Mascara(String Mascara){
+        
+        MaskFormatter F_Mascara = new MaskFormatter();
+        try{
+            F_Mascara.setMask(Mascara); //Atribui a mascara
+            F_Mascara.setPlaceholderCharacter(' '); //Caracter para preencimento 
+        }
+        catch (Exception excecao) {
+        excecao.printStackTrace();
+        } 
+        return F_Mascara;
+ } 
 
 }
