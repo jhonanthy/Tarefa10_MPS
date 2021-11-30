@@ -18,7 +18,15 @@ public class UsuarioeSenha{
         
     }
 
+    // Adapter
+    // o método esperado
     protected HashMap getlogininfo(){
+
+        return meotodoUtil();
+
+    }
+
+    private HashMap meotodoUtil() {
 
         return logininfo;
 
