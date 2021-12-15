@@ -1,3 +1,4 @@
+package Infra;
 import java.util.HashMap;
 
 public class UsuarioeSenha{
